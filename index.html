@@ -16,45 +16,15 @@
 
     <div id="lobby" class="hidden"></div>
 
-    <div id="table" class="_hidden">
-        <div>
-            <input id="show" type="button" value="show"/>
-            <input id="clear" type="button" value="clear"/>
+    <div id="table" class="hidden">
+        <div class="controls">
+            <div id="show_clear" class="control">&#x27f3;</div>
         </div>
 
-        <div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Player</th>
-                        <th>Estimation</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="state">
-                    <tr>
-                        <td>Alice</td>
-                        <td>3</td>
-                        <td><input type="button" value="Remove"/></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div>
-            <input id="estimate_0_5" type="button" value="0.5" />
-            <input id="estimate_1" type="button" value="1" />
-            <input id="estimate_2" type="button" value="2" />
-            <input id="estimate_3" type="button" value="3" />
-            <input id="estimate_5" type="button" value="5" />
-            <input id="estimate_8" type="button" value="8" />
-            <input id="estimate_13" type="button" value="13" />
-            <input id="estimate_20" type="button" value="20" />
-            <input id="estimate_40" type="button" value="40" />
-            <input id="estimate_100" type="button" value="100" />
-            <input id="estimate_dont_know" type="button" value="?" />
-            <input id="estimate_break" type="button" value="break" />
-        </div>
+        <hr/>
+        <div id="status"></div>
+        <hr/>
+        <div id="cards"></div>
     </div>
 </body>
 </html>

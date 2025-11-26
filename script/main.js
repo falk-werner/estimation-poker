@@ -1,36 +1,35 @@
 import * as config from "./config.js";
 import { Store } from "./store.js";
-import { Tables } from "./tables.js";
-import { Table } from "./table.js";
-import { TableListener } from "./tablelistener.js";
 import { Player } from "./player.js";
 import { Lobby } from "./lobby.js";
+import { TableController } from "./tablecontroller.js";
 
 const BUCKET = 'axOvHLJieLQEvQ-642ng_NQnsNbJENxN';
 const STORE = 'https://tanraku.de/kvs/store/v1';
 
 async function startup() {
     const store = new Store(config.STORE, config.BUCKET);
-    const tables = new Tables(store);
-    console.log(await tables.list());
-    const table = (await tables.list())[0];
-
     const player = new Player(document.querySelector("#player"));
 
-
-    document.querySelector("#show").addEventListener('click', () => { table.show(); });
-    document.querySelector("#clear").addEventListener('click', () => { table.clear(); });
-    document.querySelector('#estimate_0_5').addEventListener('click', () => { estimate(table, player, 0.5); });
-
-    // const tablelistener = new TableListener(table, console.log);
-
+    const table_elem = document.querySelector("#table");
+    const table_controller = new TableController(table_elem, player);
 
     const lobby_elem = document.querySelector("#lobby");
-    new Lobby(lobby_elem, store);
+    new Lobby(lobby_elem, store, (table) => {
+        join_table(table_controller, table);
+    });
 }
 
-async function estimate(table, player, estimation) {
-    await table.estimate(player.name, estimation);
+async function join_table(table_controller, table) {
+    console.log(`join table ${table.id}`);
+
+    const lobby_elem = document.querySelector("#lobby");
+    lobby_elem.classList.add("hidden");
+
+    const table_elem = document.querySelector("#table");
+    table_elem.classList.remove("hidden");
+
+    table_controller.set_table(table);
 }
 
 window.addEventListener("load", () => {

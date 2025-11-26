@@ -200,3 +200,70 @@
 .poker_table:hover .name {
     color: black;
 }
+
+/* Table */
+
+.controls .control {
+    position: relative;
+    width: 32px;
+    height: 32px;
+    margin: 2px;
+    text-align: center;
+    line-height: 32px;
+    border: 1px solid #c0c0c0;;
+    border-radius: 10%;
+    transition: all 1s ease;
+    color: #c0c0c0;
+}
+
+.controls .control:hover {
+    border: 1px solid black;
+    background-color: #c0c0c0;
+    color: black;
+}
+
+#cards div {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    height: 128px;
+    width: 96px;
+    margin: 4px;
+    text-align: center;
+    line-height: 128px;
+    font-size: 32px;
+    border: 2px solid #c0c0c0;
+    border-radius: 10%;
+    transition: all 1s ease;
+    color: #c0c0c0;
+}
+
+#cards div:hover {
+    border-color: #5050d0;
+    background-color: #d0d0f0;
+    color: #5050d0;
+}
+
+#status .icon {
+    position: relative;
+    display: inline-block;
+    height: 64px;
+    width: 48px;
+    margin: 4px;
+    text-align: center;
+    line-height: 64px;
+    font-size: 32px;
+    border: 2px solid #c0c0c0;;
+    border-radius: 10%;
+    transition: all 1s ease;
+    color: #c0c0c0;
+}
+
+#status .name {
+    position: relative;
+    display: inline-block;
+    height: 64px;
+    margin: 4px;
+    line-height: 64px;
+    font-size: 32px;
+}

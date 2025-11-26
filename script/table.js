@@ -37,7 +37,7 @@ export class Table {
         const table = await this.status();
         table.state = 'hidden';
         for (const player of Object.keys(table.players)) {
-            table.players['player'] = '';
+            table.players[player] = '-';
         }
 
         this.#store.set_entry(this.#id, table);

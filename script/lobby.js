@@ -9,9 +9,12 @@ export class Lobby {
     /** @type {Tables} */
     #tables
 
-    constructor (elem, store) {
+    #callback
+
+    constructor (elem, store, callback) {
         this.#elem = elem;
         this.#tables = new Tables(store);
+        this.#callback = callback;
 
         this.#show_lobby();
     }
@@ -79,7 +82,7 @@ export class Lobby {
     }
 
     async #join_table(table) {
-        console.log(`join table ${table.id}`);
+        this.#callback(table);
     }
 
     async #remove_table(table) {
