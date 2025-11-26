@@ -63,9 +63,10 @@ export class Lobby {
             icon_elem.textContent = '\u{1F0DF}'
             icon_elem.classList.add('icon');
 
+            const status = await table.status();
             const name_elem = document.createElement("div");
             table_elem.appendChild(name_elem);
-            name_elem.textContent = table.id;
+            name_elem.textContent = status.name || table.id;
             name_elem.classList.add("name");
         }
     }

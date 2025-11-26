@@ -53,4 +53,16 @@ export class Table {
         await this.#store.remove_entry(this.#id);
     }
 
+    async setName(value) {
+        return await this.#store.patch_entry(this.#id, [
+            {"op":"add", "path": "/name", "value": value}
+        ]);
+    }
+
+    async removePlayer(player) {
+        return await this.#store.patch_entry(this.#id, [
+            {"op":"remove", "path": `/players/${player}`}
+        ]);
+    }
+
 }

@@ -27,6 +27,21 @@ export class TableController {
             this.#showOrClear();
         });
 
+        const toggle_settings_elem = this.#element.querySelector("#toggle_settings");
+        toggle_settings_elem.addEventListener('click', () => {
+            this.#toggleSettings();
+        });
+
+        const set_table_name_elem = this.#element.querySelector("#set_table_name");
+        set_table_name_elem.addEventListener('click', () => {
+            this.#setTableName();
+        });
+
+        const kick_player_elem = this.#element.querySelector("#kick_player");
+        kick_player_elem.addEventListener('click', () => {
+            this.#kickPlayer();
+        });
+
 
         const cards = this.#element.querySelector("#cards");
         this.#add_card(cards, "\u00BD");
@@ -105,6 +120,24 @@ export class TableController {
         else {
             this.#table.clear();
         }
+    }
 
+    #toggleSettings() {
+        const settings_elem = this.#element.querySelector("#settings");
+        settings_elem.classList.toggle("hidden");
+    }
+
+    async #setTableName() {
+        if (!this.#table) { return; }
+        const name = this.#element.querySelector("#table_name").value;
+
+        await this.#table.setName(name);
+    }
+
+    async #kickPlayer() {
+        if (!this.#table) { return; }
+        const name = this.#element.querySelector("#player_to_kick").value;
+
+        await this.#table.removePlayer(name);
     }
 }
