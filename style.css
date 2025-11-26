@@ -1,0 +1,202 @@
+.header {
+    width: 100%;
+    top:0;
+    background-color: black;
+    color: white;
+    margin-bottom: 1em;
+}
+
+.header h1 {
+    display: inline;
+}
+
+.settings {
+    position: inherit;
+    float: right;
+}
+
+.hidden {
+    display: none;
+    visibility: hidden;
+}
+
+.table {
+    position: relative;
+    display: inline-block;
+    width:128px;
+    height: 128px;
+    border: 2px solid #5050d0;
+    border-radius: 10%;
+    background-color: #8080d0;
+    vertical-align: middle;
+    line-height: 128px;
+    text-align: center;
+}
+
+.table div {
+    position: absolute;
+    top:32px;
+    left: 0;
+    width: 128px;
+    height: 96px;
+    border-radius: 10%;
+    background-color: white;
+    opacity: 0.5;
+    transition: all 0.5s ease;
+}
+
+.table:hover div {
+    background-color: #f0f090;
+}
+
+/* Lobby */
+
+#lobby {
+    padding-left: 16px;
+}
+
+.new {
+    position: relative;
+    display: inline-block;
+    width: 128px;
+    height: 128px;
+    transition: all 1s ease;
+    border: 2px solid #c0c0c0;
+    border-radius: 10%;
+    color:  #c0c0c0;
+    margin: 4px;
+}
+
+.new .remove {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 16px;
+    height: 16px;
+    border: 1px solid #c0c0c0;
+    border-radius: 50%;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 16px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 1s ease;
+    color: #c0c0c0;
+}
+
+.new:hover .remove:hover {
+    background-color: rgb(241, 180, 180);
+    color: red;
+    border-color: red;
+}
+
+.new:hover {
+    border: 2px solid #1d8a1d;
+    background-color: #d0f0d0;
+}
+
+.new .icon {
+    position: absolute;
+    top:16px;
+    left:32px;
+    height:64px;
+    width: 64px;
+    text-align: center;
+    line-height:64px;
+    font-size:48px;
+    transition: all 1s ease;
+}
+
+.new .name {
+    position: absolute;
+    left:8px;
+    top:96px;
+    width:112px;
+    height: 1px;
+    font-size: 16px;
+    line-height:16px;
+    text-align: center;
+    font-weight: bold;
+    transition: all 1s ease;
+}
+
+.new:hover .icon {
+    color: #1d8a1d;
+}
+
+.new:hover .name {
+    color: black;
+}
+
+.poker_table {
+    position: relative;
+    display: inline-block;
+    width: 128px;
+    height: 128px;
+    transition: all 1s ease;
+    border: 2px solid #c0c0c0;
+    border-radius: 10%;
+    color:  #c0c0c0;
+    margin: 4px;
+}
+
+.poker_table .remove {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 16px;
+    height: 16px;
+    border: 1px solid #c0c0c0;
+    border-radius: 50%;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 16px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 1s ease;
+    color: #c0c0c0;
+}
+
+.poker_table:hover .remove:hover {
+    background-color: rgb(241, 180, 180);
+    color: red;
+    border-color: red;
+}
+
+.poker_table:hover {
+    border: 2px solid #4b4beb;
+    background-color: #d0d0f0;
+}
+
+.poker_table .icon {
+    position: absolute;
+    top:16px;
+    left:32px;
+    height:64px;
+    width: 64px;
+    text-align: center;
+    line-height:64px;
+    font-size:48px;
+    transition: all 1s ease;
+}
+
+.poker_table .name {
+    position: absolute;
+    left:8px;
+    top:96px;
+    width:112px;
+    height: 1px;
+    font-size: 16px;
+    line-height:16px;
+    text-align: center;
+    font-weight: bold;
+    transition: all 1s ease;
+}
+
+.poker_table:hover .icon {
+    color: #4b4beb;
+}
+
+.poker_table:hover .name {
+    color: black;
+}
