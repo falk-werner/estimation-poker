@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Estimation Poker</title>
+    <meta charset="utf-8">
+    <style type="text/css">
+
+        table.solid, .solid tr, .solid th, .solid td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        .solid th, .solid td {
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        .right {
+            text-align:right;
+        }
+
+        .active {
+            font-weight: bold;
+        }
+
+        .estimate {
+            width: 2em;
+            height: 3em;
+        }
+
+    </style>
+    <script type="text/javascript">
+    
+    let g_ws = null;
+
+    function startup() {
+        document.querySelector("#connect").addEventListener("click", connect);
+        document.querySelector("#show").addEventListener("click", show_or_hide);
+        document.querySelector("#clear").addEventListener("click", clear);
+
+        const estimates = document.querySelectorAll(".estimate");
+        for(const element of estimates) {
+            element.addEventListener("click", estimate );
+        }
+        
+        const params = new URLSearchParams(document.location.search);
+        const room = params.get("room") || localStorage.getItem("room") || "Room";
+        const player = params.get("player") || localStorage.getItem("player") || "Player" + parseInt((Math.random() * 9000) + 1000);
+        const is_spectator = localStorage.getItem("is_spectator");
+
+        document.querySelector("#room").value = room;
+        document.querySelector("#player").value = player;
+        document.querySelector("#is_spectator").checked = is_spectator;
+    }
+
+    function connect() {
+        if (g_ws) {
+            g_ws.close();
+        }
+        else {
+            g_ws = new WebSocket("/estimate");
+            g_ws.addEventListener("open", on_connected);
+            g_ws.addEventListener("message", on_message);
+            g_ws.addEventListener("close", on_closed);
+            g_ws.addEventListener("error", on_error);
+        }
+    }
+
+    function on_connected() {
+        document.querySelector("#connect").value = "Disconnect";
+        document.querySelector("#estimation").innerHTML = "";
+
+        const room = document.querySelector("#room").value;
+        const player = document.querySelector("#player").value;
+        const is_spectator = document.querySelector("#is_spectator").checked;
+
+        localStorage.setItem("room", room)
+        localStorage.setItem("player", player)
+        localStorage.setItem("is_spectator", is_spectator || "")
+
+        g_ws.send(JSON.stringify({
+            "method": "enter",
+            "params": {
+                "room": room,
+                "player": player,
+                "is_spectator": is_spectator
+            }
+        }));
+    }
+
+    function on_message(message) {
+        try {
+            const data = JSON.parse(message.data);
+            const show = document.querySelector("#show");
+            show.value = (data.state === "hidden") ? "Show" : "Hide";
+
+            const table = document.querySelector("#estimation");
+            table.innerHTML = "";
+
+            for(const player of data.players) {
+                const row = document.createElement("tr");
+                table.appendChild(row);
+
+                const name = document.createElement("td");
+                row.appendChild(name);
+                name.textContent = player.name;
+
+                const estimate = document.createElement("td");
+                row.appendChild(estimate);
+                estimate.textContent = player.estimate;
+                estimate.classList.add("center");
+            }
+        }
+        catch (err) {
+            console.error(err);
+        }
+    }
+
+    function on_closed() {
+        g_ws = null;
+        document.querySelector("#connect").value = "Connect";
+        document.querySelector("#estimation").innerHTML = "";
+    }
+
+    function on_error(err) {
+        console.error(err);
+    }
+
+    function show_or_hide() {
+        if (g_ws) {
+            g_ws.send(JSON.stringify({
+                "method": (document.querySelector("#show").value == "Show") ? "show" : "hide"
+            }));
+        }
+    }
+
+    function clear() {
+        if (g_ws) {
+            g_ws.send(JSON.stringify({
+                "method": "clear"
+            }));
+        }
+
+    }
+
+    function estimate(ev) {
+        if (g_ws) {
+            const target = ev.target;
+
+            const estimates = document.querySelectorAll(".estimate");
+            for(const element of estimates) {
+                element.classList.remove("active");
+            }
+            target.classList.add("active");
+
+            g_ws.send(JSON.stringify({
+                "method": "estimate",
+                "params": {
+                    "estimate": target.value
+                }
+            }));
+        }
+    }
+    </script>
+</head>
+<body onload="startup();">
+    <h1>Estimation Poker</h1>
+
+    <h2>Connection</h2>
+    <table>
+        <tr>
+            <td><label for="room">Room:</label></td>
+            <td><input id="room" name="room" type="text" value="Room" /></td>
+        </tr>
+        <tr>
+            <td><label for="player">Name:</label></td>
+            <td><input id="player" name="player" type="text" value="Player" /></td>
+        </tr>
+        <tr>
+            <td><label for="is_spectator">Spectator: </label></td>
+            <td><input id="is_spectator" name="is_spectator" type="checkbox" /></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td class="right"><input id="connect" type="button" value="Connect"/></td>
+        </tr>
+    </table>
+
+    <h2>Estimation</h2>
+    <p>
+        <input id="show" type="button" value="Show"/>
+        <input id="clear" type="button" value="Clear"/>
+    </p>
+    <table class="solid">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Estimate</th>
+            </tr>
+        </thead>
+        <tbody id="estimation"></tbody>
+    </table>
+    <p>
+        <input class="estimate" type="button" value="&half;"/>
+        <input class="estimate" type="button" value="1"/>
+        <input class="estimate" type="button" value="2"/>
+        <input class="estimate" type="button" value="3"/>
+        <input class="estimate" type="button" value="5"/>
+        <input class="estimate" type="button" value="8"/>
+        <input class="estimate" type="button" value="13"/>
+        <input class="estimate" type="button" value="20"/>
+        <input class="estimate" type="button" value="?"/>
+    </p>
+</body>
+</html>
