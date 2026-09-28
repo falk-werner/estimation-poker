@@ -6,13 +6,13 @@ based on websockets.
 ## Build Docker Image
 
 ```bash
-docker buid -t estimation-poker .
+docker build -t estimation-poker .
 ```
 
 ## Run
 
 ```bash
-docker run -it --rm -p 5000:5000 estimage-poker
+docker run -it --rm -p 5000:5000 estimation-poker
 ```
 
 Navigate to http://localhost:5000/.
@@ -21,11 +21,27 @@ Navigate to http://localhost:5000/.
 
 - HOST: IP address or hostname to bind to
 - PORT: Port to bind to
+- SSL_CERT: Path to TLS certificate
+- SSL_KEY: Path to TLS private key
 
 ### Command Line Arguments
 
 - --host, -H STRING: IP address or hostname to bind to
 - --port, -p NUMBER: Port to bind to
+- --cert, -c STRING: Path to TLS certificate
+- --key, -k  STRING: Path to TLS private key
+
+## SSL
+
+```bash
+mkdir ssl
+openssl req -x509 -newkey rsa:4096 \
+    -keyout "ssl/key.pem" -out "ssl/cert.pem" \
+    -days 365 -nodes -batch
+
+docker run -it --rm -v "$(realpath ssl):/ssl" -p 5000:5000 \
+    estimation-poker -c /ssl/cert.pem -k /ssl/key.pem
+```
 
 ## Endpoints
 

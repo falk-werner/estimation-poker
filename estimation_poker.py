@@ -5,6 +5,8 @@ import uuid
 import json
 import os
 import argparse
+import ssl
+import sys
 from websockets.asyncio.server import serve
 
 class ConnectionManager:
@@ -139,10 +141,25 @@ async def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--host", "-H", type=str, default=os.getenv("HOST", "0.0.0.0"))
     parser.add_argument("--port", "-p", type=int, default=int(os.getenv("PORT", "5000")))
+    parser.add_argument("--cert", "-c", type=str, default=os.getenv("SSL_CERT", None))
+    parser.add_argument("--key", "-k", type=str, default=os.getenv("SSL_KEY", None))
     args = parser.parse_args()
 
-    server = await serve(poker, args.host, args.port, process_request=serve_http)
-    print(f"run websocket server at http://{args.host}:{args.port}/, use Ctrl-C to quit")
+    context = None
+    if args.cert is not None or args.key is not None:
+        if args.cert is None:
+            print("error: missing TLS certificate")
+            sys.exit(1)
+        if args.key is None:
+            print("error: missing TLS key")
+            sys.exit(1)
+        context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+        context.load_cert_chain(args.cert, args.key)
+
+
+    server = await serve(poker, args.host, args.port, process_request=serve_http, ssl=context)
+    protocol = "http" if context is None else "https"
+    print(f"run websocket server at {protocol}://{args.host}:{args.port}/, use Ctrl-C to quit")
     await server.serve_forever()
 
 if __name__ == "__main__":
